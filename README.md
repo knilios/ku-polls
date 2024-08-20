@@ -14,6 +14,6 @@ Tp be added
 ## Project documents
 All of the project documents can be access in [Project Wiki](../../wiki/Home).
 
-- [Vision Statement](../../wiki/Vision)
+- [Vision Statement](../../wiki/Vision-and-Scope)
 - [Requirements](../../wiki/Requirements)
 - [Project Plan](../../wiki/Project-Plan)
