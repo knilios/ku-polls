@@ -1,6 +1,6 @@
 # Ku polls : An online survey service
 
-This application is used to open an online polls. It's based on ```Django``` libary.
+This application is used to open an online polls and surveys. It's based on ```Django``` libary.
 
 This app is created as a part of [Individual Software Process](
 https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.th) in the academic year 2024.
