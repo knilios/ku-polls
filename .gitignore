@@ -1,4 +1,9 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 .env
 venv
 mysite/__pycache__
 polls/__pycache__
+polls/migrations/__pycache__
