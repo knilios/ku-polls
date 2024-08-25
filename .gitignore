@@ -7,3 +7,5 @@ venv
 mysite/__pycache__
 polls/__pycache__
 polls/migrations/__pycache__
+
+db.sqlite3
