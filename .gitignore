@@ -9,3 +9,5 @@ polls/__pycache__
 polls/migrations/__pycache__
 
 db.sqlite3
+.vscode
+.idea
