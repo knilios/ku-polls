@@ -1,18 +1,19 @@
 import datetime
 
 from django.test import TestCase
-from django.utils import timezone, reverse
+from django.utils import timezone
+from django.urls import reverse
 
 from .models import Question
 
 def create_question(question_text, days):
     """
-    Createa question with the given `question_text` and published the
+    Create a question with the given `question_text` and published the
     given number of `days` offset to now (negative for questions published
     in the past, positive for question that have to be published).
     """
     time = timezone.now() + datetime.timedelta(days=days)
-    return Question.object.create(question_text=question_text, pub_date=time)
+    return Question.objects.create(question_text=question_text, pub_date=time)
 
 
 class QuestionModelTests(TestCase):
@@ -90,7 +91,6 @@ class QuestionModelTests(TestCase):
         old_question = Question(pub_date=time)
         self.assertIs(old_question.was_published_recently(), False)
 
-
     def test_was_published_recently_with_recent_question(self):
         """
         was_published_recently() returns True for questions whose pub_date
@@ -99,6 +99,14 @@ class QuestionModelTests(TestCase):
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
+        
+    # def test_can_vote_with_end_date_already_passed(self):
+    #     """Test can_vote attribute with a question that the end_date has already passed"""
+    #     pub_date = timezone.now() - datetime.timedelta(days=10)
+    #     end_date = timezone.now() - datetime.timedelta(days=4)
+    #     expired_question = Question.object.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
+    #     self.assertIs(expired_question.can_vote(), False)
+        
 
 
 class QuestionDetailViewTests(TestCase):
