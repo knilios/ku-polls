@@ -9,7 +9,7 @@ class Question(models.Model):
     """The question of the poll. Contains the text and publication date.
     """
     question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField("dat published")
+    pub_date = models.DateTimeField("date published", auto_now_add=True)
     end_date = models.DateTimeField("date published", null=True)
     
     def __str__(self):
