@@ -2,10 +2,11 @@ from django.db.models import F
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib import messages
 
 from .models import Choice, Question
 
@@ -26,27 +27,39 @@ class DetailView(generic.DetailView):
     
     def get_queryset(self):
         """
-        Excludes any questoin that aren't published yet.
+        Excludes any question that aren't published yet.
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
+    
+    def dispatch(self, request, *args, **kwargs) -> HttpResponse:
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Http404:
+            return redirect(reverse("polls:index"))
     
 
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
     
+    def dispatch(self, request, *args, **kwargs) -> HttpResponse:
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Http404:
+            return redirect(reverse("polls:index"))
+    
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
-    except (KeyError, Choice.DoesNotExist):
+    except Exception:
+        messages.error(request, "You didn't select a choice. Please consider doing so.")
         return render(
             request,
-            "polls/detial.html",
+            "polls/detail.html",
             {
-                "question":question,
-                "error_message": "You didn't select a choice. Please consider doing so."
+                "question":question
             },
         )
     else:
