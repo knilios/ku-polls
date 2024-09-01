@@ -1,9 +1,20 @@
-<a href="{% url 'polls:index' %}"> Home </a>
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<a href="{% url 'polls:index' %}"> Back to List of Polls </a>
 <h1> {{question.question_text}} </h1>
-<ul>
+<table class="table table-striped">
+    <tr>
+        <th scope="col">Content</th>
+        <th scope="col">Votes</th>
+    </tr>
+    <tbody>
     {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes}} 
-        vote{{choice.votes | pluralize}}
-    </li>
+    <tr>
+    <th scope="row">{{ choice.choice_text }}</th> 
+    <th>{{choice.votes}}</th>
+    </tr>
     {% endfor%}
-</ul>
+</tbody>
+</table>

@@ -1,6 +1,11 @@
-<a href="{% url 'polls:index' %}"> Home </a>
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<a href="{% url 'polls:index' %}"> Back to List of Polls </a>
 <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}
+    <div class="form-check">
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
         {% if messages %}
@@ -10,12 +15,12 @@
             {% endfor %}
         </div>
         {% endif %}
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         {% for choice in question.choice_set.all %}
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
     </fieldset>
+</div>
     <input type="submit" value="Vote">
     </form>
-    
+    <a href="{% url 'polls:results' question.id %}" class="text">Result</a>
