@@ -31,14 +31,14 @@ class Question(models.Model):
         """Check whether the poll is still votable"""
         if self.end_date == None:
             return True
-        if self.end_date.now().date() >= timezone.now().date():
+        if self.end_date.date() >= timezone.now().date() and self.is_published():
             return True
         else:
             return False
         
     def is_published(self) -> bool:
         """Check whether the poll has been created and ready to be deployed or not."""
-        if self.pub_date.now().date >= timezone.now().date():
+        if self.pub_date.date() <= timezone.now().date():
             return True
         else:
             return False

@@ -100,13 +100,65 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
         
-    # def test_can_vote_with_end_date_already_passed(self):
-    #     """Test can_vote attribute with a question that the end_date has already passed"""
-    #     pub_date = timezone.now() - datetime.timedelta(days=10)
-    #     end_date = timezone.now() - datetime.timedelta(days=4)
-    #     expired_question = Question.object.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
-    #     self.assertIs(expired_question.can_vote(), False)
+    def test_can_vote_with_end_date_already_passed(self):
+        """Test can_vote method with a question that the end_date has already passed"""
+        pub_date = timezone.now() + datetime.timedelta(days=-10)
+        end_date = timezone.now() + datetime.timedelta(days=-1)
+        expired_question = Question.objects.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
+        self.assertIs(expired_question.can_vote(), False)
+    
+    def test_can_vote_with_today_is_not_in_the_voting_range(self):
+        """
+        Test can_vote method when today is not in the middle of pub_date and end_date.
+        It must result in false.
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=10)
+        end_date = timezone.now() + datetime.timedelta(days=20)
+        present_question = Question.objects.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
+        self.assertIs(present_question.can_vote(), False)
         
+    def test_can_vote_with_end_date_in_the_future(self):
+        """
+        Test can_vote method with a question that the end_date is in the future.
+        It must result in true.
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=-10)
+        end_date = timezone.now() + datetime.timedelta(days=10)
+        present_question = Question.objects.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
+        self.assertIs(present_question.can_vote(), True)
+        
+    def test_can_vote_with_end_date_is_null(self):
+        """
+        Test can_vote method with a question that the end_date is null.
+        It must result in true.
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=-10)
+        present_question = Question.objects.create(question_text="Hello", pub_date=pub_date)
+        self.assertIs(present_question.can_vote(), True)
+        
+    def test_is_published_pub_date_in_the_past(self):
+        """
+        Test is_published with a question which pub_date is in the past. It should return true. 
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=-10)
+        end_date = timezone.now() + datetime.timedelta(days=10)
+        present_question = Question.objects.create(question_text="Hello", pub_date=pub_date,end_date=end_date)
+        self.assertIs(present_question.is_published(), True)
+    
+    def test_is_published_pub_date_in_the_future(self):
+        """
+        Test is_published with a question which pub_date is in the past. It should return false. 
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=10)
+        present_question = Question.objects.create(question_text="Hello", pub_date=pub_date)
+        self.assertIs(present_question.is_published(), False)
+        
+    def test_is_published_pub_date_is_not_given(self):
+        """
+        Test is_published with a question which pub_date is not specified. It should return true.
+        """
+        present_question = Question.objects.create(question_text="Hello")
+        self.assertIs(present_question.is_published(), True)
 
 
 class QuestionDetailViewTests(TestCase):
