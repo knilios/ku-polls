@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from decouple import config
+from decouple import config, Csv
 
 from pathlib import Path
 
@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='fake-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool) 
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=["localhost"], cast=lambda x: [i.strip() for i in x.split(',')]) 
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default="localhost", cast=Csv()) 
 
 
 # Application definition
