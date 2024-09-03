@@ -4,16 +4,41 @@
 {% bootstrap_javascript %}
 
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+
+
+<h1>KU POLLS</h1>
+{% if user.is_authenticated %}
+    <p> Hello There, {{user.username}}</p>
+    <a href="{% url "logout"%}">Log-out here using GET lol.</a>
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Logout">
+</from>
+    
+{% else %}
+    <a href="{% url "login" %}"> Please Login </a>
+{% endif %}
 {% if latest_question_list %}
+<div class="card">
+<div class="card-body">
 <table class="table table-hover">
     <tbody>
     {% for question in latest_question_list %}
     <tr>
         <th>
-            <a href="{% url 'polls:detail' question.id %}" class="text">{{ question.question_text }}</a>
+            <a href="{% url 'polls:detail' question.id %}" class="text">{{ question.question_text }} </a>
         </th>
         <th>
             <a href="{% url 'polls:results' question.id %}" class="text">Result</a>
+        </th>
+        <th color="green">
+            {% if question.can_vote%}
+            Available.
+            {% else %}
+            Closed.
+            {% endif%}
         </th>
     </tr>
     {% endfor %}
@@ -22,3 +47,5 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+</div>
+</div>
