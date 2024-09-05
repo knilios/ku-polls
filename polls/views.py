@@ -40,6 +40,7 @@ class DetailView(generic.DetailView):
         """
         try:
             return super().dispatch(request, *args, **kwargs)
+        # get objector404 and now we can do anything with that
         except Http404:
             return redirect(reverse("polls:index"))
 
@@ -74,8 +75,17 @@ def vote(request, question_id):
                 "question": question
             },
         )
-    else:
-        selected_choice.votes = F('votes') + 1
-        selected_choice.save()
-        # Always return a redirect after a POST request. :D
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        
+    # Referencing the current user
+    this_user = request.user
+    # TODO
+    # Follow this tutorial https://cpske.github.io/ISP/assignment/ku-polls/iteration3-vote-class-and-view
+    
+    # Get the user's vote
+    # try:
+    #     # vote = this_user.vote_set.get()
+    #     vote = Vote.objects.get(user=this_user, choice=Choice)
+    selected_choice.votes = F('votes') + 1
+    selected_choice.save()
+    # Always return a redirect after a POST request. :D
+    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
