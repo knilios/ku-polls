@@ -4,7 +4,27 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'polls:index'%}">KU-POLLS</a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Hello There, {{user.username}}</a>
+        </li>
+        <li class="nav-item active">
+          
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <input class="nav-link" type="submit" value="Logout">
+    </from>
+        </li>        
+    {% else %}
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'login' %}">Login</span></a>
+    </li>
+    {% endif %}
+      </ul>
   </nav>
 
 {% block template%}
-{% endblock %}
+{% endblock %} 
