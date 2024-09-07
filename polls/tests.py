@@ -19,6 +19,7 @@ def create_question(question_text, days):
 
 class QuestionModelTests(TestCase):
     """This class handle the testing of the Question class."""
+
     def test_no_question(self):
         """
         If no quesions exist, an appropriate message is displayed
@@ -171,6 +172,7 @@ class QuestionModelTests(TestCase):
 
 class QuestionDetailViewTests(TestCase):
     """This class handle the testing of the Question class functionality in the view"""
+
     def test_future_question(self):
         """
         The detail view of a question with a pub_date in the future
@@ -192,3 +194,67 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+    def test_closed_question(self):
+        """
+        The detail view of a question with a pub_date in the past
+        and a end_date in the past.
+        """
+        create_date = timezone.now() + datetime.timedelta(days=-10)
+        end_date = timezone.now() + datetime.timedelta(days=-5)
+        question_text = "Is Africa a country?"
+        closed_question = Question.objects.create(
+            question_text=question_text, pub_date=create_date, end_date=end_date)
+        url = reverse("polls:detail", args=(closed_question.id,))
+        response = self.client.get(url)
+        self.assertRedirects(
+            response,
+            reverse("polls:results", args=[closed_question.id]),
+            status_code=302,
+            target_status_code=200
+        )
+        
+
+class QuestionResultsViewTest(TestCase):
+    """Tests the Question class in the Results page"""
+    
+    def test_future_question(self):
+        """
+        The results view of a question with a pub_date in the future
+        returns a 302 temporary redirects back to the index page.
+        """
+        future_question = create_question(
+            question_text="Future question.", days=5)
+        url = reverse("polls:results", args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertRedirects(
+            response,
+            reverse("polls:index"),
+            status_code=302,
+            target_status_code=200
+        )
+
+    def test_past_question(self):
+        """
+        The results view of a question with a pub_date in the past
+        displays the question's text.
+        """
+        past_question = create_question(
+            question_text="Past Question.", days=-5)
+        url = reverse("polls:results", args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
+
+    def test_closed_question(self):
+        """
+        The results view of a question with a pub_date in the past
+        and a end_date in the past.
+        """
+        create_date = timezone.now() + datetime.timedelta(days=-10)
+        end_date = timezone.now() + datetime.timedelta(days=-5)
+        question_text = "Is Africa a country?"
+        closed_question = Question.objects.create(
+            question_text=question_text, pub_date=create_date, end_date=end_date)
+        url = reverse("polls:results", args=(closed_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
