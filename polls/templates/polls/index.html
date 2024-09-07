@@ -13,11 +13,20 @@
     {% for question in latest_question_list %}
     <tr>
         <th>
-            <a href="{% url 'polls:detail' question.id %}" class="text">{{ question.question_text }}</a>
+            <a href="{% url 'polls:detail' question.id %}" class="text">{{ question.question_text }} </a>
         </th>
         <th>
             <a href="{% url 'polls:results' question.id %}" class="text">Result</a>
         </th>
+        {% if question.can_vote%}
+        <th color="green">
+            Available.
+        </th>
+            {% else %}
+        <th color="red">
+            Closed.
+        </th>
+            {% endif%}
     </tr>
     {% endfor %}
 </tbody>

@@ -39,6 +39,12 @@ class DetailView(generic.DetailView):
         This method redirects the user if the polls does not exists.
         """
         try:
+            question = self.get_object()
+            if(not question.can_vote()):
+                if (not question.is_published()):
+                    return redirect(reverse("polls:index"))
+                messages.error(request, "This poll is already closed.")
+                return redirect(reverse("polls:results",args=[question.id]))
             return super().dispatch(request, *args, **kwargs)
         except Http404:
             return redirect(reverse("polls:index"))
@@ -54,6 +60,9 @@ class ResultsView(generic.DetailView):
         This method redirects the user if the polls does not exists.
         """
         try:
+            question = self.get_object()
+            if(not question.is_published()):
+                return redirect(reverse("polls:index"))
             return super().dispatch(request, *args, **kwargs)
         except Http404:
             return redirect(reverse("polls:index"))
