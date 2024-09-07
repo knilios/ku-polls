@@ -8,7 +8,7 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 
-from .models import Choice, Question
+from .models import Choice, Question, Vote
 
 
 class IndexView(generic.ListView):
@@ -83,8 +83,15 @@ def vote(request, question_id):
                 "question": question
             },
         )
-    else:
-        selected_choice.votes = F('votes') + 1
-        selected_choice.save()
-        # Always return a redirect after a POST request. :D
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+    # Referencing the current user
+    this_user = request.user
+    try:
+        vote = Vote.objects.get(user=this_user, choice=selected_choice)
+    except Vote.DoesNotExist:
+        vote = Vote.objects.create(user=this_user, choice=selected_choice)
+    
+    
+    selected_choice.votes = F('votes') + 1
+    selected_choice.save()
+    # Always return a redirect after a POST request. :D
+    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
