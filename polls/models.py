@@ -56,7 +56,7 @@ class Choice(models.Model):
     # votes = models.IntegerField(default=0)
     
     @property
-    def vote(self) -> int:
+    def votes(self) -> int:
         """Return the number of votes"""
         return self.vote_set.count()
 

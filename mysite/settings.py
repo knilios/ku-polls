@@ -58,7 +58,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = 'polls:index'  # after login, show list of polls
-LOGOUT_REDIRECT_URL = 'login'       # after logout, return to login page
+LOGOUT_REDIRECT_URL = 'polls:index'       # after logout, return to login page
 
 
 ROOT_URLCONF = 'mysite.urls'

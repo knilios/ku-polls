@@ -14,9 +14,9 @@
           
           <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% comment %} {{ form.as_p }} {% endcomment %}
         <input class="nav-link" type="submit" value="Logout">
-    </from>
+    </form>
         </li>        
     {% else %}
     <li class="nav-item active">
