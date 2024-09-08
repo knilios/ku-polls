@@ -1,22 +1,28 @@
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% extends "../base.html" %}
 
-<a href="{% url 'polls:index' %}"> Back to List of Polls </a>
+{% block template %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}
     <div class="form-check">
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
         {% if messages %}
-        <div>
+        <div class="alert alert-warning" role="alert">
             {% for message in messages %}
                 {{ message }}
             {% endfor %}
         </div>
         {% endif %}
         {% for choice in question.choice_set.all %}
+        {% if marked == choice%}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" checked=true>
+            {% else %}
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            {% endif %}
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
     </fieldset>
@@ -24,3 +30,5 @@
     <input type="submit" value="Vote">
     </form>
     <a href="{% url 'polls:results' question.id %}" class="text">Result</a>
+
+{% endblock %}
