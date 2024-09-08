@@ -5,4 +5,8 @@
 
 body {
     background: white url("images/background.png") no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    position:relative;
 }

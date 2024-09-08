@@ -11,7 +11,7 @@
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
         {% if messages %}
-        <div>
+        <div class="alert alert-warning" role="alert">
             {% for message in messages %}
                 {{ message }}
             {% endfor %}

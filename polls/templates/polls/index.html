@@ -8,29 +8,23 @@
 
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 {% if latest_question_list %}
-<table class="table table-hover">
-    <tbody>
+<div>
     {% for question in latest_question_list %}
-    <tr>
-        <th>
-            <a href="{% url 'polls:detail' question.id %}" class="text">{{ question.question_text }} </a>
-        </th>
-        <th>
-            <a href="{% url 'polls:results' question.id %}" class="text">Result</a>
-        </th>
-        {% if question.can_vote%}
-        <th color="green">
-            Available.
-        </th>
-            {% else %}
-        <th color="red">
-            Closed.
-        </th>
-            {% endif%}
-    </tr>
+    <div class="bg-white p-5 rounded shadow w-75 m-3">
+            <h2 class="text">{{ question.question_text }} </h2>
+            <form action="{% url 'polls:detail' question.id %}" method='GET'>
+            {% if question.can_vote%}
+            <input class="btn btn-primary" value="Vote" type="submit">
+                {% else %}
+                <input type="button" class="btn btn-danger" value="Closed" disabled=true>
+                {% endif%}
+            </form>
+            <form action="{% url 'polls:results' question.id %}">
+                <input class="btn btn-success" value="Result" type="submit">
+            </form>
+    </div>
     {% endfor %}
-</tbody>
-</table>
+</div>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
