@@ -149,7 +149,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'polls.log',
             'formatter': 'details',
@@ -163,7 +163,7 @@ LOGGING = {
     'loggers': {
         'polls': {
             'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
     },

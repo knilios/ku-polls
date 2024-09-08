@@ -9,6 +9,8 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import user_logged_in, user_login_failed, user_logged_out
+from django.dispatch import receiver, Signal
 
 
 import logging
@@ -39,6 +41,7 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get_context_data(self, **kwargs) -> dict:
+        logger.debug("hello")
         _context = super().get_context_data(**kwargs)
         question = self.get_object()
         user = self.request.user
@@ -85,12 +88,14 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
-    logger.debug("line 88")
+    logger.info("Vote submitted for poll #{0}".format(question_id))
     """This function handles the POST request from the using voting on the poll"""
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
+        logger.info("Question {0} vote for choice {1}".format(question_id, request.POST["choice"]))
     except (KeyError, Choice.DoesNotExist):
+        logger.error("Invalid question id {0} or choice id {1}".format(question_id, request.POST["choice"]))
         messages.error(
             request, "You didn't select a choice. Please consider doing so.")
         return render(
@@ -114,7 +119,32 @@ def vote(request, question_id):
         vote = Vote.objects.create(user=this_user, choice=selected_choice)
 
     vote.save()
-    # selected_choice.votes = F('votes') + 1
-    # selected_choice.save()
     # Always return a redirect after a POST request. :D
     return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+def get_client_ip(request):
+    """ Retrieve ip from the user"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+@receiver(user_logged_in)
+def user_logged_in_successfully(sender, request, user, **kwargs):
+    """Log the user loggin in"""
+    ip_addr = get_client_ip(request)
+    logger.info(f'{user.username} logged in at the ip address: {ip_addr}')
+    
+@receiver(user_logged_out)
+def user_logged_out_successfully(sender, request, user, **kwargs):
+    """Log the user loggin in"""
+    ip_addr = get_client_ip(request)
+    logger.info(f'{user.username} logged out at the ip address: {ip_addr}')
+    
+@receiver(user_login_failed)
+def user_logged_in_successfully(sender, request, credentials, **kwargs):
+    """Log the user loggin in"""
+    ip_addr = get_client_ip(request)
+    logger.warning(f'{credentials["username"]} from {ip_addr} tried to login but failed.')
