@@ -95,7 +95,7 @@ def vote(request, question_id):
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
         logger.info("Question {0} vote for choice {1}".format(question_id, request.POST["choice"]))
     except (KeyError, Choice.DoesNotExist):
-        logger.error("Invalid question id {0} or choice id {1}".format(question_id, request.POST["choice"]))
+        logger.error("The choice has not been selected for the question {0}.".format(question_id))
         messages.error(
             request, "You didn't select a choice. Please consider doing so.")
         return render(
