@@ -1,5 +1,7 @@
 # Ku polls : An online survey service
 
+[![Django CI](https://github.com/knilios/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/knilios/ku-polls/actions/workflows/django.yml)
+
 This application is used to open online polls and surveys. It's based on ```Django``` web framework and written in Python.
 
 This app is created as a part of [Individual Software Process](
