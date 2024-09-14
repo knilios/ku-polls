@@ -1,6 +1,5 @@
 from mysite import settings
 from polls.models import Question, Choice
-from django.contrib.auth import authenticate  # to "login" a user using code
 from django.contrib.auth.models import User
 import django.test
 import datetime
@@ -8,8 +7,6 @@ import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
-
-from .models import Question
 
 
 def create_question(question_text, days):
@@ -104,12 +101,19 @@ class QuestionModelTests(TestCase):
         was_published_recently() returns True for questions whose pub_date
         is within the last day.
         """
-        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
+        time = (timezone.now() -
+                datetime.timedelta(
+                    hours=23,
+                    minutes=59,
+                    seconds=59))
         recent_question = Question(pub_date=time)
-        self.assertIs(recent_question.was_published_recently(), True)
+        self.assertIs(
+            recent_question.was_published_recently(),
+            True)
 
     def test_can_vote_with_end_date_already_passed(self):
-        """Test can_vote method with a question that the end_date has already passed"""
+        """Test can_vote method with a question that the
+        end_date has already passed"""
         pub_date = timezone.now() + datetime.timedelta(days=-10)
         end_date = timezone.now() + datetime.timedelta(days=-1)
         expired_question = Question.objects.create(
@@ -118,7 +122,8 @@ class QuestionModelTests(TestCase):
 
     def test_can_vote_with_today_is_not_in_the_voting_range(self):
         """
-        Test can_vote method when today is not in the middle of pub_date and end_date.
+        Test can_vote method when today is not in the
+        middle of pub_date and end_date.
         It must result in false.
         """
         pub_date = timezone.now() + datetime.timedelta(days=10)
@@ -129,7 +134,8 @@ class QuestionModelTests(TestCase):
 
     def test_can_vote_with_end_date_in_the_future(self):
         """
-        Test can_vote method with a question that the end_date is in the future.
+        Test can_vote method with a
+        question that the end_date is in the future.
         It must result in true.
         """
         pub_date = timezone.now() + datetime.timedelta(days=-10)
@@ -150,7 +156,8 @@ class QuestionModelTests(TestCase):
 
     def test_is_published_pub_date_in_the_past(self):
         """
-        Test is_published with a question which pub_date is in the past. It should return true. 
+        Test is_published with a question which pub_date
+        is in the past. It should return true.
         """
         pub_date = timezone.now() + datetime.timedelta(days=-10)
         end_date = timezone.now() + datetime.timedelta(days=10)
@@ -160,7 +167,8 @@ class QuestionModelTests(TestCase):
 
     def test_is_published_pub_date_in_the_future(self):
         """
-        Test is_published with a question which pub_date is in the past. It should return false. 
+        Test is_published with a question which pub_date is in the past.
+        It should return false.
         """
         pub_date = timezone.now() + datetime.timedelta(days=10)
         present_question = Question.objects.create(
@@ -169,14 +177,16 @@ class QuestionModelTests(TestCase):
 
     def test_is_published_pub_date_is_not_given(self):
         """
-        Test is_published with a question which pub_date is not specified. It should return true.
+        Test is_published with a question which pub_date is not specified.
+        It should return true.
         """
         present_question = Question.objects.create(question_text="Hello")
         self.assertIs(present_question.is_published(), True)
 
 
 class QuestionDetailViewTests(TestCase):
-    """This class handle the testing of the Question class functionality in the view"""
+    """This class handle the testing of
+     the Question class functionality in the view"""
 
     def test_future_question(self):
         """
@@ -209,12 +219,18 @@ class QuestionDetailViewTests(TestCase):
         end_date = timezone.now() + datetime.timedelta(days=-5)
         question_text = "Is Africa a country?"
         closed_question = Question.objects.create(
-            question_text=question_text, pub_date=create_date, end_date=end_date)
-        url = reverse("polls:detail", args=(closed_question.id,))
+            question_text=question_text,
+            pub_date=create_date,
+            end_date=end_date)
+        url = reverse(
+            "polls:detail",
+            args=(closed_question.id,))
         response = self.client.get(url)
         self.assertRedirects(
             response,
-            reverse("polls:results", args=[closed_question.id]),
+            reverse(
+                "polls:results",
+                args=[closed_question.id]),
             status_code=302,
             target_status_code=200
         )
@@ -252,14 +268,17 @@ class QuestionResultsViewTest(TestCase):
 
     def test_closed_question(self):
         """
-        The results view of a question with a pub_date in the past
+        The results view of a question
+        with a pub_date in the past
         and a end_date in the past.
         """
         create_date = timezone.now() + datetime.timedelta(days=-10)
         end_date = timezone.now() + datetime.timedelta(days=-5)
         question_text = "Is Africa a country?"
         closed_question = Question.objects.create(
-            question_text=question_text, pub_date=create_date, end_date=end_date)
+            question_text=question_text,
+            pub_date=create_date,
+            end_date=end_date)
         url = reverse("polls:results", args=(closed_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -277,7 +296,8 @@ class QuestionResultsViewTest(TestCase):
 class UserAuthTest(django.test.TestCase):
 
     def setUp(self):
-        # superclass setUp creates a Client object and initializes test database
+        """superclass setUp creates
+        a Client object and initializes test database"""
         super().setUp()
         self.username = "testuser"
         self.password = "FatChance!"

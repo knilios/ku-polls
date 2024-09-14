@@ -1,16 +1,14 @@
 from .models import Choice, Question, Vote
-from django.db.models import F
-from django.db.models.query import QuerySet
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import loader
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import user_logged_in, user_login_failed, user_logged_out
-from django.dispatch import receiver, Signal
+from django.contrib.auth import (user_logged_in,
+                                 user_login_failed,
+                                 user_logged_out)
+from django.dispatch import receiver
 
 
 import logging
@@ -26,7 +24,9 @@ class IndexView(generic.ListView):
         """Return the last five published questions.
             (not including those set to be published in the future)
         """
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by("-pub_date")
 
 
 class DetailView(generic.DetailView):
@@ -38,7 +38,9 @@ class DetailView(generic.DetailView):
         """
         Excludes any question that aren't published yet.
         """
-        return Question.objects.filter(pub_date__lte=timezone.now())
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        )
 
     def get_context_data(self, **kwargs) -> dict:
         logger.debug("hello")
@@ -47,7 +49,9 @@ class DetailView(generic.DetailView):
         user = self.request.user
         if not user.is_authenticated:
             return _context
-        marked = user.vote_set.filter(choice__question=question)
+        marked = user.vote_set.filter(
+            choice__question=question
+        )
         logger.debug("The user is authenticated")
         if marked:
             _context["marked"] = marked[0].choice
@@ -55,18 +59,32 @@ class DetailView(generic.DetailView):
 
     def dispatch(self, request, *args, **kwargs) -> HttpResponse:
         """
-        This method redirects the user if the polls does not exists.
+        This method redirects the user if the polls does not exist.
         """
         try:
             question = self.get_object()
             if (not question.can_vote()):
                 if (not question.is_published()):
                     return redirect(reverse("polls:index"))
-                messages.error(request, "This poll is already closed.")
-                return redirect(reverse("polls:results", args=[question.id]))
-            return super().dispatch(request, *args, **kwargs)
+                messages.error(
+                    request,
+                    "This poll is already closed."
+                )
+                return redirect(
+                    reverse(
+                        "polls:results",
+                        args=[question.id]
+                    )
+                )
+            return super().dispatch(
+                request,
+                *args,
+                **kwargs
+            )
         except Http404:
-            return redirect(reverse("polls:index"))
+            return redirect(
+                reverse("polls:index")
+            )
 
 
 class ResultsView(generic.DetailView):
@@ -81,23 +99,39 @@ class ResultsView(generic.DetailView):
         try:
             question = self.get_object()
             if (not question.is_published()):
-                return redirect(reverse("polls:index"))
-            return super().dispatch(request, *args, **kwargs)
+                return redirect(
+                    reverse(
+                        "polls:index"
+                    )
+                )
+            return super().dispatch(
+                request,
+                *args,
+                **kwargs
+            )
         except Http404:
             return redirect(reverse("polls:index"))
 
 
 def vote(request, question_id):
     logger.info("Vote submitted for poll #{0}".format(question_id))
-    """This function handles the POST request from the using voting on the poll"""
+    """This function handles the POST request
+    from the using voting on the poll"""
     question = get_object_or_404(Question, pk=question_id)
     try:
-        selected_choice = question.choice_set.get(pk=request.POST["choice"])
-        logger.info("Question {0} vote for choice {1}".format(question_id, request.POST["choice"]))
+        selected_choice = question.choice_set.get(
+            pk=request.POST["choice"]
+        )
+        logger.info(
+            f"Question {question_id} vote for choice {request.POST['choice']}"
+        )
     except (KeyError, Choice.DoesNotExist):
-        logger.error("The choice has not been selected for the question {0}.".format(question_id))
+        logger.error(
+            "The choice has not been selected for the question {0}."
+            .format(question_id))
         messages.error(
-            request, "You didn't select a choice. Please consider doing so.")
+            request,
+            "You didn't select a choice. Please consider doing so.")
         return render(
             request,
             "polls/detail.html",
@@ -108,19 +142,34 @@ def vote(request, question_id):
     # Referencing the current user
     this_user = request.user
     if not this_user.is_authenticated:
-        next_url = reverse('polls:detail', args=[question_id])
+        next_url = reverse(
+            'polls:detail',
+            args=[question_id])
         redirect_url = reverse('login')
-        return HttpResponseRedirect(f"{redirect_url}?next={next_url}")
+        return HttpResponseRedirect(
+            f"{redirect_url}?next={next_url}"
+        )
     try:
         # When the user already vote for this option
-        vote = this_user.vote_set.get(choice__question=question)
+        vote = this_user.vote_set.get(
+            choice__question=question
+        )
         vote.choice = selected_choice
     except Vote.DoesNotExist:
-        vote = Vote.objects.create(user=this_user, choice=selected_choice)
+        vote = Vote.objects.create(
+            user=this_user,
+            choice=selected_choice
+        )
 
     vote.save()
     # Always return a redirect after a POST request. :D
-    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+    return HttpResponseRedirect(
+        reverse(
+            "polls:results",
+            args=(question.id,)
+        )
+    )
+
 
 def get_client_ip(request):
     """ Retrieve ip from the user"""
@@ -131,20 +180,24 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+
 @receiver(user_logged_in)
 def user_logged_in_successfully(sender, request, user, **kwargs):
     """Log the user loggin in"""
     ip_addr = get_client_ip(request)
     logger.info(f'{user.username} logged in at the ip address: {ip_addr}')
-    
+
+
 @receiver(user_logged_out)
 def user_logged_out_successfully(sender, request, user, **kwargs):
     """Log the user loggin in"""
     ip_addr = get_client_ip(request)
     logger.info(f'{user.username} logged out at the ip address: {ip_addr}')
-    
+
+
 @receiver(user_login_failed)
-def user_logged_in_successfully(sender, request, credentials, **kwargs):
+def user_logged_in_failed(sender, request, credentials, **kwargs):
     """Log the user loggin in"""
     ip_addr = get_client_ip(request)
-    logger.warning(f'{credentials["username"]} from {ip_addr} tried to login but failed.')
+    logger.warning(
+        f'{credentials["username"]} from {ip_addr} tried to login but failed.')
