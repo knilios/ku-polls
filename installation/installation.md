@@ -32,7 +32,7 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users.json
+python manage.py loaddata data/users-v2.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
@@ -74,7 +74,7 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users.json
+python manage.py loaddata data/users-v2.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
@@ -118,7 +118,7 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users.json
+python manage.py loaddata data/users-v2.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.

@@ -1,0 +1,92 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$lPRFXHzVACG90ZpZRSccfz$rQt8PKwvFbLx3hL1oGUGGka76hV79+UkOaWojwckKQ0=",
+    "last_login": "2024-09-03T07:47:43.357Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@example.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-08-24T11:28:53.376Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$Lw6S9koyf6IHQwsxxLLPTg$VUbmrF/OjZsJKCXaOdR0o0jm2MciMdFQEuvFkszYHrE=",
+    "last_login": "2024-09-12T14:45:22.516Z",
+    "is_superuser": false,
+    "username": "potterinwza007",
+    "first_name": "Harry",
+    "last_name": "Potter",
+    "email": "Harry.p@hogwarts.ac.uk",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-09-03T07:52:42.088Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$hwYwDF5zO54vBklRnSeeb6$Zx8Kme4UZ6l2eXH47S8iPRHK2gQimzCGqXiOaO560Qk=",
+    "last_login": "2024-09-08T12:57:03.027Z",
+    "is_superuser": false,
+    "username": "demo1",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-09-08T12:54:52.483Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$YUH0vnKiI0xYzIMaUttPU0$rgnZVUCuj+OrxhUPJbwR8i1LLGZX3jfr+O62Ea/E5sU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "demo2",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-09-08T12:55:33.966Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$tVqpDQHxfms42Die03vrM9$0mv2e4Dguul1avdp1Fyv09Stol9pCapLTN8LqtHulwo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "demo3",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-09-08T12:56:09.117Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
