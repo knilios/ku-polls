@@ -1,6 +1,7 @@
 # Ku polls : An online survey service
 
 [![Django unit test](https://github.com/knilios/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/knilios/ku-polls/actions/workflows/django.yml)
+[![Flake8 test](https://github.com/knilios/ku-polls/actions/workflows/flake8-test.yml/badge.svg)](https://github.com/knilios/ku-polls/actions/workflows/flake8-test.yml)
 
 ![KU-POLLS](image.png)
 
