@@ -17,9 +17,7 @@ if %errorlevel% equ 0 (
     echo ALLOWED_HOSTS=* >> .env
     echo TIME_ZONE=Asia/Bangkok >> .env
     echo "COMPLETED"
-    exit 0
 
 ) else (
     echo Error: Please install Python 3.11
-    exit 1
 )
