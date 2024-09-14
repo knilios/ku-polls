@@ -470,21 +470,5 @@
     "question": 11,
     "choice_text": "Canada"
   }
-},
-{
-  "model": "polls.vote",
-  "pk": 2,
-  "fields": {
-    "choice": 4,
-    "user": 2
-  }
-},
-{
-  "model": "polls.vote",
-  "pk": 3,
-  "fields": {
-    "choice": 10,
-    "user": 2
-  }
 }
 ]

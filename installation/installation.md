@@ -3,7 +3,8 @@
 1. [For Windows](#windows)
 2. [For MacOS](#mac-os)
 3. [For Linux machine](#linux)
-4. [Installation notes](#installation-notes)
+4. [Testing](#testing-the-application)
+5. [Installation notes](#installation-notes)
 
 ## Windows
 ### Using a prewritten script
@@ -32,7 +33,8 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users-v2.json
+python manage.py loaddata data/users.json
+python manage.py loaddata data/votes-v4.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
@@ -74,7 +76,8 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users-v2.json
+python manage.py loaddata data/users.json
+python manage.py loaddata data/votes-v4.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
@@ -118,7 +121,8 @@ python -m pip install -r requirements.txt
 4. Initialize Django
 ```sh
 python manage.py migrate
-python manage.py loaddata data/users-v2.json
+python manage.py loaddata data/users.json
+python manage.py loaddata data/votes-v4.json
 python manage.py loaddata data/polls-v4.json
 ```
 5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
@@ -129,6 +133,12 @@ echo ALLOWED_HOSTS=* >> .env
 echo TIME_ZONE=Asia/Bangkok >> .env
 ```
 6. Installation is completed.
+
+## Testing the application
+The test can be done with the following command.
+```sh
+python manage.py test polls
+```
 
 ## Installation notes
 You can specify the following 

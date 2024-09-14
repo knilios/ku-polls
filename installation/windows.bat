@@ -7,7 +7,8 @@ if %errorlevel% equ 0 (
     python -m pip install -r requirements.txt
     echo Initializing Django
     python manage.py migrate
-    python manage.py loaddata data/users-v2.json
+    python manage.py loaddata data/users.json
+    python manage.py loaddata data/votes-v4.json
     python manage.py loaddata data/polls-v4.json
 
     echo Initializing environment
