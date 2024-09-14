@@ -7,9 +7,10 @@
 5. [Installation notes](#installation-notes)
 
 ## Windows
+> Notice: Please make sure that you have ```git``` installed in your machine.
 ### Using a prewritten script
 1. Make sure that you have Python 3.11 installed on your machine. You can download it from [Microsoft Store](https://www.microsoft.com/store/productId/9NRWMJP3717K?ocid=pdpshare).
-2. Open ```Power Shell``` (Cannot be cmd)
+2. Open ```Command Prompt``` (Powershell is not recommended)
 3. Download the repository by running the following command.
 ```sh
 git clone https://github.com/knilios/ku-polls.git
@@ -17,36 +18,45 @@ git clone https://github.com/knilios/ku-polls.git
 4. Execute the script file ```ku-polls/installation/windows.bat```.
 ```sh
 cd ku-polls
-./installation/windows.bat
+call installation/windows.bat
 ```
 ### Manually
-1. Make sure that you have Python 3.11 installed in your machine. You can download it from [Microsoft Store](https://www.microsoft.com/store/productId/9NRWMJP3717K?ocid=pdpshare).
-2. Install Python Virtual Environment.
+1. Open ```Command Prompt``` (Powershell is not recommended)
+2. Download the repository by running the following command.
+```sh
+git clone https://github.com/knilios/ku-polls.git
+```
+3. Make sure that you have Python 3.11 installed in your machine. You can download it from [Microsoft Store](https://www.microsoft.com/store/productId/9NRWMJP3717K?ocid=pdpshare).
+4. Install Python Virtual Environment.
 ```sh
 py -3.11 -m venv venv
 ```
-3. Install requirement packages.
+5. Install requirement packages.
 ```sh
-./venv/Scripts/activate
+call venv/Scripts/activate
 python -m pip install -r requirements.txt
 ```
-4. Initialize Django
+6. Initialize Django
 ```sh
 python manage.py migrate
+```
+The following commands are optional. It loads the prewritten users and polls.
+```sh
 python manage.py loaddata data/users.json
 python manage.py loaddata data/polls-v4.json
 python manage.py loaddata data/votes-v4.json
 ```
-5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
+7. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
 ```sh
 python -c "from django.core.management.utils import get_random_secret_key; f = open('.env', 'w'); f.write('SECRET_KEY=django-insecure-'+get_random_secret_key()+'\n'); f.close()"
 echo DEBUG=False >> .env
 echo ALLOWED_HOSTS=* >> .env
 echo TIME_ZONE=Asia/Bangkok >> .env
 ```
-6. Installation is completed.
+8. Installation is completed.
 
 ## Mac OS
+> Notice: Please make sure that you have ```git``` installed in your machine.
 ### Using a prewritten script
 1. Open ```Terminal```
 2. Download the repository by running the following command.
@@ -56,40 +66,49 @@ git clone https://github.com/knilios/ku-polls.git
 3. Execute the script file ```ku-polls/installation/mac-os.sh```.
 ```sh
 cd ku-polls
-./installation/mac-os.sh
+source installation/mac-os.sh
 ```
 ### Manually
-1. Make sure that you have Python 3.11 installed on your machine. You can download it from by:
+1. Open your terminal.
+2. Download the repository by running the following command.
+```sh
+git clone https://github.com/knilios/ku-polls.git
+```
+3. Make sure that you have Python 3.11 installed on your machine. You can download it from by:
 ```bash
 brew install python@3.11
 ```
-2. Install Python Virtual Environment.
+4. Install Python Virtual Environment.
 ```sh
 python3.11 -m pip install --user virtualenv
 python3.11 -m venv venv
 source venv/bin/activate
 ```
-3. Install requirement packages.
+5. Install requirement packages.
 ```sh
 python -m pip install -r requirements.txt
 ```
-4. Initialize Django
+6. Initialize Django
 ```sh
 python manage.py migrate
+```
+The following commands are optional. It loads the prewritten users and polls.
+```sh
 python manage.py loaddata data/users.json
 python manage.py loaddata data/polls-v4.json
 python manage.py loaddata data/votes-v4.json
 ```
-5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
+7. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
 ```sh
 python -c "from django.core.management.utils import get_random_secret_key; f = open('.env', 'w'); f.write('SECRET_KEY=django-insecure-'+get_random_secret_key()+'\n'); f.close()"
 echo DEBUG=False >> .env
 echo ALLOWED_HOSTS=* >> .env
 echo TIME_ZONE=Asia/Bangkok >> .env
 ```
-6. Installation is completed.
+8. Installation is completed.
 
 ## Linux
+> Notice: Please make sure that you have ```git``` installed in your machine.
 ### Using a prewritten script
 1. Open ```Terminal```
 2. Download the repository by running the following command.
@@ -102,37 +121,45 @@ cd ku-polls
 source installation/linux-deb-ubun.sh
 ```
 ### Manually
-1. Make sure that you have Python 3.11 installed in your machine. You can download it from by:
+1. Open Terminal.
+2. Download the repository by running the following command.
+```sh
+git clone https://github.com/knilios/ku-polls.git
+```
+3. Make sure that you have Python 3.11 installed in your machine. You can download it from by:
 ```bash
 sudo apt-get update
 sudo apt-get install python3.11
 ```
-2. Install Python Virtual Environment.
+4. Install Python Virtual Environment.
 ```sh
 sudo apt install python3.11-venv
 sudo apt install python3-virtualenv
 virtualenv --python python3.11 venv
 ```
-3. Install requirement packages.
+5. Install requirement packages.
 ```sh
 source venv/bin/activate
 python -m pip install -r requirements.txt
 ```
-4. Initialize Django
+6. Initialize Django
 ```sh
 python manage.py migrate
+```
+The following commands are optional. It loads the prewritten users and polls.
+```sh
 python manage.py loaddata data/users.json
 python manage.py loaddata data/polls-v4.json
 python manage.py loaddata data/votes-v4.json
 ```
-5. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
+7. Initialize ```.env``` file. The following script will automatically create a .env file and generate a Django secret key for you.
 ```sh
 python -c "from django.core.management.utils import get_random_secret_key; f = open('.env', 'w'); f.write('SECRET_KEY=django-insecure-'+get_random_secret_key()+'\n'); f.close()"
 echo DEBUG=False >> .env
 echo ALLOWED_HOSTS=* >> .env
 echo TIME_ZONE=Asia/Bangkok >> .env
 ```
-6. Installation is completed.
+8. Installation is completed.
 
 ## Testing the application
 The test can be done with the following command.
