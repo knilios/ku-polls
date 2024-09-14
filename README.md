@@ -32,7 +32,7 @@ python manage.py runserver
 
 ## Demo users
 | username | password | 
-|————|————| 
+|-------|----------| 
 | demo1 | hackme11 | 
 | demo2 | hackme22 | 
 | demo3 | hackme33 |
