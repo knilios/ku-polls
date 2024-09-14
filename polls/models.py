@@ -32,16 +32,20 @@ class Question(models.Model):
 
     def can_vote(self) -> bool:
         """Check whether the poll is still votable"""
-        if self.end_date == None:
+        if self.end_date is None:
             return True
-        if self.end_date.date() >= timezone.now().date() and self.is_published():
+        if (self.end_date.date()
+                >= timezone.now().date()
+                and self.is_published()):
             return True
         else:
             return False
 
     def is_published(self) -> bool:
-        """Check whether the poll has been created and ready to be deployed or not."""
-        if self.pub_date.date() <= timezone.now().date():
+        """Check whether the poll has been created
+        and ready to be deployed or not."""
+        if (self.pub_date.date()
+                <= timezone.now().date()):
             return True
         else:
             return False
@@ -49,27 +53,27 @@ class Question(models.Model):
 
 class Choice(models.Model):
     """
-    It's the choice of the poll question. It contains the number of votes and the text.
+    It's the choice of the poll question.
+    It contains the number of votes and the text.
     """
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     # votes = models.IntegerField(default=0)
-    
+
     @property
     def votes(self) -> int:
         """Return the number of votes"""
         return self.vote_set.count()
-
 
     def __str__(self):
         """
         Return the text of the choice.
         """
         return self.choice_text
-    
+
 
 class Vote(models.Model):
     """A bote by a user for a choice in a poll"""
-    
+
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
