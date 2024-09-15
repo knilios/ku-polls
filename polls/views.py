@@ -163,6 +163,10 @@ def vote(request, question_id):
 
     vote.save()
     # Always return a redirect after a POST request. :D
+    messages.success(
+        request,
+        "Your vote has been saved!"
+    )
     return HttpResponseRedirect(
         reverse(
             "polls:results",

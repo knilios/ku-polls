@@ -55,15 +55,6 @@
 },
 {
   "model": "polls.question",
-  "pk": 10,
-  "fields": {
-    "question_text": "If you have an opportunity to study abroad, which of the following countries do you consider the best choice?",
-    "pub_date": "2024-09-14T08:24:10.641Z",
-    "end_date": null
-  }
-},
-{
-  "model": "polls.question",
   "pk": 11,
   "fields": {
     "question_text": "If you have an opportunity to study abroad, which of the following countries do you consider the best choice?",
