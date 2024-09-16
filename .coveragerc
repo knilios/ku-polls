@@ -1,0 +1,26 @@
+[run]
+source = polls
+branch = True
+
+[report]
+include = *.py
+omit = 
+    test*.py
+    */site-packages/*
+    */migrations/*
+    venv/
+    mysite/
+    __init__.py
+    admin.py
+    apps.py
+    tests.py
+    urls.py
+    manage.py
+
+exclude_also =
+    def __repr__
+    def __str__ 
+    if __name__ == .__main__.:
+
+[html]
+directory = coverage_html_report
