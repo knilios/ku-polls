@@ -30,6 +30,10 @@ source venv/bin/activate
 ```sh
 python manage.py runserver
 ```
+- If you wish to run a CSS file, you can do so with the following command.
+```sh
+python manage.py runserver --insecure
+```
 
 ## Demo users
 | username | password | 
