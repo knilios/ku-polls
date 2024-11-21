@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: "postgres"
+    restart: always
+    ports: 
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD?:admin}
+      POSTGRES_USER: ${DATABASE_USER?:admin}
+      POSTGRES_DB: ${DATABASE_NAME?:myDatabase}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./db:/var/lib/postgresql/data
+  app: 
+    build: .
+    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DATABASE_HOST: db
+      DATABASE_PORT: ${DATABASE_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "9000:9000"

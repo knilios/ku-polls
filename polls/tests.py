@@ -1,4 +1,4 @@
-from mysite import settings
+
 from polls.models import Question, Choice
 from django.contrib.auth.models import User
 import django.test

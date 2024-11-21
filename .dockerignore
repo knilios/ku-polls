@@ -1,5 +1,10 @@
-# Byte-compiled / optimized / DLL files
+.venv/
+.git/
+.idea/
+coverage_html_report/
+
 __pycache__/
+*/__pycache__/*
 *.py[cod]
 
 .env
@@ -16,4 +21,6 @@ db.sqlite3
 
 .coverage
 coverage_html_report
-db
+
+*.md
+installation/
